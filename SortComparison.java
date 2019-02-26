@@ -1,3 +1,5 @@
+import java.io.File;
+import java.util.Scanner;
 
 /**
  *  This class contains static methods that implementing sorting of an array of numbers
@@ -5,7 +7,17 @@
  *
  *  @author Luka Hickey
  *  @version HT 2019
- */
+ *  
+ *  Questions to be Answered:
+ *  
+ *  a: Selection sort and Insertion sort are heavily affected 
+ *  by the order of input
+ *  b:
+ *  c:SelectionSort scales the worst, quicksort and recursive mergesort scale the best
+ *  d: Recursive MergeSort was faster than Iterative mergesort in my case
+ *  e: quicksort or mergeSort recursive were tied as the fastest for all 7 files.
+ */ 
+
 
  class SortComparison {
 
@@ -16,7 +28,7 @@
      * @return array sorted in ascending order.
      *
      */
-    static double [] insertionSort (double a[]){
+    public static double [] insertionSort (double a[]){
         for (int i = 1; i<a.length; i++) {
         	int j = i - 1;
         	double key = a[i];
@@ -284,15 +296,59 @@
    
 
 
-    public static void main(String[] args) {
-    	double[] array = {3.2,1.2,2.5,1.7,4.2,3.6,0.1};
-    	array = mergeSortIterative(array);
-    	for(int i = 0; i<array.length; i++) {
-    		System.out.print(array[i]);
-    		System.out.println();
+    public static void main(String[] args)
+    {
+    	double[] array1 = new double[1000];
+    	double[] array2 = new double[100];
+    	double[] array3 = new double[1000];
+    	double[] array4 = new double[1000];
+    	double[] array5 = new double[1000];
+    	double[] array6 = new double[1000];
+    	double[] array7 = new double[1000];//Use arrays for text file input
+    	double[] temp;
+    	try {
+    	File file1 = new File("numbersSorted1000.txt");  //change file to desired input file
+    	Scanner scanner1 = new Scanner(file1);
+    	
+    	for(int i =0; i<10; i++) {
+    		array1[i]=scanner1.nextDouble();  //read in doubles to array from txt file
     	}
-
-        //todo: do experiments as per assignment instructions
+    	
+    	//Then record time for each algorithm
+    	temp = array1;
+    	long start = System.currentTimeMillis();
+    	array1= SortComparison.insertionSort(array1);
+    	long end = System.currentTimeMillis();
+    	System.out.println("DEBUG: Insertion Sort took " + (end - start) + " MilliSeconds");
+    	
+    	array1 = temp;
+    	long start1 = System.currentTimeMillis();
+    	array1= SortComparison.selectionSort(array1);
+    	long end1 = System.currentTimeMillis();
+    	System.out.println("DEBUG: Selection Sort took " + (end1 - start1) + " MilliSeconds");
+    	
+    	array1 = temp;
+    	long start2 = System.currentTimeMillis();
+    	array1= SortComparison.mergeSortRecursive(array1,0,9);
+    	long end2 = System.currentTimeMillis();
+    	System.out.println("DEBUG: Recursive Merge took " + (end2 - start2) + " MilliSeconds");
+    	
+    	array1 = temp;
+    	long start3 = System.currentTimeMillis();
+    	array1= SortComparison.quickSort(array1,0,9);
+    	long end3 = System.currentTimeMillis();
+    	System.out.println("DEBUG: QuickSort took " + (end3 - start3) + " MilliSeconds");
+    	
+    	array1 = temp;
+    	long start4 = System.currentTimeMillis();
+    	array1= SortComparison.mergeSortIterative(array1);
+    	long end4 = System.currentTimeMillis();
+    	System.out.println("DEBUG: Iterative Merge  took " + (end4 - start4) + " MilliSeconds");
+    	
+    	
+    	} catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
  }//end class
